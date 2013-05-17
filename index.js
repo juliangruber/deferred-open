@@ -1,5 +1,6 @@
 var Emitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
+var bind = require('bind-component');
 
 module.exports = defer;
 module.exports.install = install;
@@ -7,10 +8,10 @@ module.exports.install = install;
 function defer (fn) {
   return function () {
     var self = this;
-    if (self._deferred.ready) return fn.apply(this, arguments);
+    if (self._ready.ready) return fn.apply(self, arguments);
  
     var args = [].slice.call(arguments);
-    self._deferred.on('go', function (err) {
+    self._ready.on('go', function (err) {
       if (err) throw err;
       fn.apply(self, args);
     });
@@ -18,24 +19,23 @@ function defer (fn) {
 }
 
 function install (obj) {
-  obj._deferred = new Deferred(obj);
+  var ee = new Emitter;
+
+  function ready (err) {
+    ready.ready = true;
+    ee.emit('go', err);
+  }
+
+  ready.ready = false;
+  ready.on = bind(ee, 'on');
+  ready.emit = bind(ee, 'emit');
+
+  function queue (fn) {
+    ee.on('go', function (err) {
+      fn(err, obj);
+    });
+  }
+
+  obj._ready = ready;
+  obj._queue = queue;
 }
-
-function Deferred (fn) {
-  Emitter.call(this);
-  this.ready = false;
-  this.fn = fn;
-}
-
-inherits(Deferred, Emitter);
-
-Deferred.prototype.resolve = function (err) {
-  this.ready = true;
-  this.emit('go', err);
-};
-
-Deferred.prototype.queue = function (cb) {
-  this.on('go', function (err) {
-    cb(err, this.fn);
-  });
-};

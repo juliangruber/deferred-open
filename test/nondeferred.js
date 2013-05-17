@@ -7,13 +7,13 @@ function Safe (cb) {
 
   Deferred.install(self);
 
-  if (typeof cb === 'function') self._deferred.queue(cb);
+  if (typeof cb === 'function') self._queue(cb);
 
   self.secret = false;
 
   setTimeout(function () {
     self.secret = 'foobar';
-    self._deferred.resolve();
+    self._ready();
   }, 500);
 }
 

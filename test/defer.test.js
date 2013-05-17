@@ -9,7 +9,7 @@ function Something () {
 
   setTimeout(function () {
     self.loaded = true;
-    self._deferred.resolve();
+    self._ready();
   }, 500);
 }
 

@@ -50,7 +50,7 @@ function Something () {
 
   setTimeout(function () { // some async function
     self.loaded = true;
-    self._deferred.resolve();
+    self._ready();
   }, 500);
 }
 
@@ -79,13 +79,13 @@ function Something (cb) {
   if (!(self instanceof Something)) return new Something(cb);
   Deferred.install(self);
 
-  if (cb) self._deferred.queue(cb); // allow async api too
+  if (cb) self._queue(cb); // allow async api too
 
   self.loaded = false;
 
   setTimeout(function () {
     self.loaded = true;
-    self._deferred.resolve();
+    self._ready();
   }, 500);
 }
 ```
@@ -110,7 +110,7 @@ Something(function (err, something) {
 Call this in `fn`'s constructor in order to install the `_deferred` member
 object.
 
-### Deferred#resolve([err])
+### this._resolve([err])
 
 Call this when you finished doing your async stuff.
 
@@ -119,7 +119,7 @@ If you pass something as the `err` parameter,
 * a deferred call will throw
 * a non deferred call will pass that as first argument to the callback
 
-### Deferred#queue(fn)
+### this._queue(fn)
 
 Call `fn` with `(err, this)` as soon as `this._deferred.resolve()` has been
 called (with the optional error argument).
