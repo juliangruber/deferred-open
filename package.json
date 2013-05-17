@@ -1,0 +1,33 @@
+{
+  "name": "deferred",
+  "description": "Make methods wait for async constructors.",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/juliangruber/deferred.git"
+  },
+  "homepage": "https://github.com/juliangruber/deferred",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "tape": "~1.0.2"
+  },
+  "keywords": [
+    "deferred",
+    "defer",
+    "async",
+    "constructor",
+    "callback",
+    "hell",
+    "controlflow"
+  ],
+  "author": {
+    "name": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com"
+  },
+  "license": "MIT"
+}
