@@ -44,7 +44,7 @@ var Deferred = require('deferred-open');
 function Something (cb) {
   var self = this;
   if (!(self instanceof Something)) return new Something(cb);
-  Deferred.install.call(self); // => self._deferred
+  Deferred.install(self); // => self._deferred
   if (cb) self._deferred.queue(cb); // allow async api too
 
   self.loaded = false;
@@ -79,7 +79,7 @@ Both will output `success` after 500ms.
 
 ## API
 
-### Deferred.install.call(fn)
+### Deferred.install(fn)
 
 Call this in `fn`'s constructor in order to install the `_deferred` member
 object.
