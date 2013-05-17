@@ -3,7 +3,7 @@ var Deferred = require('..');
 
 function Something () {
   var self = this;
-  Deferred.install.call(self);
+  Deferred.install(self);
 
   self.loaded = false;
 

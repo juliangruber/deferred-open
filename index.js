@@ -17,8 +17,8 @@ function defer (fn) {
   };
 }
 
-function install () {
-  this._deferred = new Deferred(this);
+function install (obj) {
+  obj._deferred = new Deferred(obj);
 }
 
 function Deferred (fn) {

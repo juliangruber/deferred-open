@@ -5,7 +5,7 @@ function Safe (cb) {
   var self = this;
   if (!(self instanceof Safe)) return new Safe(cb);
 
-  Deferred.install.call(self);
+  Deferred.install(self);
 
   if (typeof cb === 'function') self._deferred.queue(cb);
 
