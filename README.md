@@ -44,7 +44,7 @@ var Deferred = require('deferred-open');
 function Something () {
   var self = this;
 
-  Deferred.install(self); // => self._deferred
+  Deferred.install(self); // => self._ready, self._queue
 
   self.loaded = false; // fake internal state
 
@@ -70,7 +70,7 @@ something.doAThing(); // "success" after 500ms
 
 ## Non deferred open
 
-If you want to support non deferred open too, use `Deferred#queue`:
+If you want to support non deferred open too, use `this._queue`:
 
 ```js
 function Something (cb) {
@@ -107,8 +107,8 @@ Something(function (err, something) {
 
 ### Deferred.install(fn)
 
-Call this in `fn`'s constructor in order to install the `_deferred` member
-object.
+Call this in `fn`'s constructor in order to install the `_ready` and `_queue`
+member functions.
 
 ### this._resolve([err])
 
@@ -121,13 +121,13 @@ If you pass something as the `err` parameter,
 
 ### this._queue(fn)
 
-Call `fn` with `(err, this)` as soon as `this._deferred.resolve()` has been
+Call `fn` with `(err, this)` as soon as `this._ready()` has been
 called (with the optional error argument).
 
 ### Deferred(fn)
 
 Returns a function that gets called only after this internal deffered object
-has been signaled by `this._deferred.go()`.
+has been signaled by `this._resolve()`.
 
 ## Installation
 
