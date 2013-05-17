@@ -3,13 +3,13 @@ var Deferred = require('..');
 
 function Something () {
   var self = this;
-  Deferred.install(self);
+  Deferred.install.call(self);
 
   self.loaded = false;
 
   setTimeout(function () {
     self.loaded = true;
-    self._deferred.go();
+    self._deferred.resolve();
   }, 500);
 }
 

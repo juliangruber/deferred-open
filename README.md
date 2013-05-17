@@ -43,7 +43,7 @@ var Deferred = require('deferred');
 
 function Something () {
   var self = this;
-  Deferred.install(self); // => self._deferred
+  Deferred.install.call(self); // => self._deferred
 
   self.loaded = false;
 
@@ -74,7 +74,7 @@ success
 
 ## API
 
-### Deferred.install(fn)
+### Deferred.install.call(fn)
 
 Call this in `fn`'s constructor in order to install the `_deferred` member object.
 

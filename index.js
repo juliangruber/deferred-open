@@ -10,24 +10,32 @@ function defer (fn) {
     if (self._deferred.ready) return fn.apply(this, arguments);
  
     var args = [].slice.call(arguments);
-    self._deferred.on('go', function () {
+    self._deferred.on('go', function (err) {
+      if (err) throw err;
       fn.apply(self, args);
     });
   };
 }
 
-function install (obj) {
-  obj._deferred = new Deferred();
+function install () {
+  this._deferred = new Deferred(this);
 }
 
-function Deferred () {
+function Deferred (fn) {
   Emitter.call(this);
   this.ready = false;
+  this.fn = fn;
 }
 
 inherits(Deferred, Emitter);
 
-Deferred.prototype.go = function () {
+Deferred.prototype.resolve = function (err) {
   this.ready = true;
-  this.emit('go');
+  this.emit('go', err);
+};
+
+Deferred.prototype.queue = function (cb) {
+  this.on('go', function (err) {
+    cb(err, this.fn);
+  });
 };
