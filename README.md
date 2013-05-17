@@ -41,15 +41,17 @@ constructor finished doing its async operations.
 ```js
 var Deferred = require('deferred');
 
-function Something () {
+function Something (cb) {
   var self = this;
+  if (!(self instanceof Something)) return new Something(cb);
   Deferred.install.call(self); // => self._deferred
+  if (cb) self._deferred.queue(cb); // allow async api too
 
   self.loaded = false;
 
   setTimeout(function () {
     self.loaded = true;
-    self._deferred.go();
+    self._deferred.resolve();
   }, 500);
 }
 
@@ -58,29 +60,43 @@ Something.prototype.doAThing = Deferred(function () {
   console.log('success');
 });
 
-console.log('wait for 500ms...');
+```
 
+And use it like this:
+
+```js
+// Deferred
 var something = new Something();
 something.doAThing();
+
+// Or non deferred
+Something(function (err, something) {
+  something.doAThing();
+});
 ```
 
-When run, this outputs `success` after 500ms.
-
-```bash
-$ node example/simple
-wait for 500ms...
-success
-```
+Both will output `success` after 500ms.
 
 ## API
 
 ### Deferred.install.call(fn)
 
-Call this in `fn`'s constructor in order to install the `_deferred` member object.
+Call this in `fn`'s constructor in order to install the `_deferred` member
+object.
 
-### Deferred#go()
+### Deferred#resolve([err])
 
 Call this when you finished doing your async stuff.
+
+If you pass something as the `err` parameter,
+
+* a deferred call will throw
+* a non deferred call will pass that as first argument to the callback
+
+### Deferred#queue(fn)
+
+Call `fn` with `(err, this)` as soon as `this._deferred.resolve()` has been
+called (with the optional error argument).
 
 ### Deferred(fn)
 
