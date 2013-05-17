@@ -7,7 +7,29 @@ For example, database libraries like
 [LevelUp](https://github.com/rvagg/node-levelup) or
 [node-redis](http://ghub.io/redis) expose an API that you can use immediately,
 although the connection hasn't been established yet. This greatly helps reduce
-callback depth. So, All calls to member functions have to be deffered until the
+callback depth.
+
+In most cases you rather want this:
+
+```js
+var db = levelup('/db');
+db.get('foo', function (err, val) {
+  val == 'bar';
+});
+```
+
+than this:
+
+```js
+levelup('/db', function (err, db) {
+  if (err) throw err;
+  db.get('foo', function (err, val) {
+    val == 'bar';
+  })
+});
+```
+
+So, all calls to member functions have to be deffered until the
 connection is up. This module helps by mixing in to an Object and deferring
 operations until the constructor is done doing its async stuff.
 
