@@ -41,15 +41,14 @@ constructor finished doing its async operations.
 ```js
 var Deferred = require('deferred-open');
 
-function Something (cb) {
+function Something () {
   var self = this;
-  if (!(self instanceof Something)) return new Something(cb);
+
   Deferred.install(self); // => self._deferred
-  if (cb) self._deferred.queue(cb); // allow async api too
 
-  self.loaded = false;
+  self.loaded = false; // fake internal state
 
-  setTimeout(function () {
+  setTimeout(function () { // some async function
     self.loaded = true;
     self._deferred.resolve();
   }, 500);
@@ -65,6 +64,35 @@ Something.prototype.doAThing = Deferred(function () {
 And use it like this:
 
 ```js
+var something = new Something();
+something.doAThing(); // "success" after 500ms
+```
+
+## Non deferred open
+
+If you want to support non deferred open too, use `Deferred#queue`:
+
+```js
+function Something (cb) {
+  var self = this;
+
+  if (!(self instanceof Something)) return new Something(cb);
+  Deferred.install(self);
+
+  if (cb) self._deferred.queue(cb); // allow async api too
+
+  self.loaded = false;
+
+  setTimeout(function () {
+    self.loaded = true;
+    self._deferred.resolve();
+  }, 500);
+}
+```
+
+Now you can use it like this:
+
+```js
 // Deferred
 var something = new Something();
 something.doAThing();
@@ -74,8 +102,6 @@ Something(function (err, something) {
   something.doAThing();
 });
 ```
-
-Both will output `success` after 500ms.
 
 ## API
 
