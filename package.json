@@ -1,12 +1,12 @@
 {
-  "name": "deferred",
+  "name": "deferred-open",
   "description": "Make methods wait for async constructors.",
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/juliangruber/deferred.git"
+    "url": "git://github.com/juliangruber/deferred-open.git"
   },
-  "homepage": "https://github.com/juliangruber/deferred",
+  "homepage": "https://github.com/juliangruber/deferred-open",
   "main": "index.js",
   "scripts": {
     "test": "tape test/*.js"

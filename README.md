@@ -1,5 +1,5 @@
 
-# deferred
+# deferred-open
 
 Make methods wait for async constructors.
 
@@ -39,7 +39,7 @@ Install `Deferred` onto a function and make `doAThing` wait until the
 constructor finished doing its async operations.
 
 ```js
-var Deferred = require('deferred');
+var Deferred = require('deferred-open');
 
 function Something (cb) {
   var self = this;
@@ -108,7 +108,7 @@ has been signaled by `this._deferred.go()`.
 With [npm](http://npmjs.org) do
 
 ```bash
-$ npm install deferred
+$ npm install deferred-open
 ```
 
 ## License
