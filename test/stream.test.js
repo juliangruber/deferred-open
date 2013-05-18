@@ -13,7 +13,10 @@ function Something () {
 
 Something.prototype.createStream = Deferred.stream(function () {
   var stream = new Stream();
-  stream.readable = true;
+  stream.readable = stream.writable = true;
+  stream.write = function (d) {
+    stream.emit('data', d.toUpperCase());
+  };
   setTimeout(function () {
     stream.emit('data', 'hey');
   });
@@ -24,14 +27,15 @@ test('stream', function (t) {
   var something = new Something();
   var stream = something.createStream();
 
-  var start = +new Date();
-  stream.on('data', function (data) {
-    var delay = +new Date() - start;
-    t.assert(delay > 400, 'delay ok');
-    t.assert(delay < 600, 'delay ok');
+  stream.once('data', function (data) {
+    t.equals(data, 'WIN');
 
-    t.equals(data, 'hey');
-    t.end();
+    stream.once('data', function (data) {
+      t.equals(data, 'hey');
+      t.end();
+    });
   });
+
+  stream.write('win');
 });
 

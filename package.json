@@ -1,7 +1,7 @@
 {
   "name": "deferred-open",
   "description": "Make methods wait for async constructors.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/juliangruber/deferred-open.git"
@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "bind-component": "0.0.1",
-    "through": "~2.3.4"
+    "through": "~2.3.4",
+    "duplexer": "~0.1.1",
+    "tmp-stream": "~0.0.0"
   },
   "devDependencies": {
     "tape": "~1.0.2"

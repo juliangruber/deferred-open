@@ -2,6 +2,8 @@ var Emitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
 var bind = require('bind-component');
 var through = require('through');
+var duplex = require('duplexer');
+var tmpStream = require('tmp-stream');
 
 module.exports = defer;
 module.exports.stream = stream;
@@ -25,20 +27,15 @@ function stream (fn) {
     var self = this;
     if (self._ready.ready) return fn.apply(self, arguments);
 
-    var tr = through().pause();
+    var tmp = tmpStream();
     var args = [].slice.call(arguments);
 
     self._ready.on('go', function (err) {
-      if (err) return tr.emit('error', err);
-
-      var st = fn.apply(self, args);
-      if (st.writable) tr.pipe(st);
-      if (st.readable) st.pipe(tr);
-
-      tr.resume();
+      if (err) return tmp.emit('error', err);
+      tmp.replace(fn.apply(self, args));
     });
 
-    return tr;
+    return tmp;
   };
 }
 
