@@ -1,8 +1,10 @@
 var Emitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
 var bind = require('bind-component');
+var through = require('through');
 
 module.exports = defer;
+module.exports.stream = stream;
 module.exports.install = install;
 
 function defer (fn) {
@@ -15,6 +17,28 @@ function defer (fn) {
       if (err) throw err;
       fn.apply(self, args);
     });
+  };
+}
+
+function stream (fn) {
+  return function () {
+    var self = this;
+    if (self._ready.ready) return fn.apply(self, arguments);
+
+    var tr = through().pause();
+    var args = [].slice.call(arguments);
+
+    self._ready.on('go', function (err) {
+      if (err) return tr.emit('error', err);
+
+      var st = fn.apply(self, args);
+      if (st.writable) tr.pipe(st);
+      if (st.readable) st.pipe(tr);
+
+      tr.resume();
+    });
+
+    return tr;
   };
 }
 

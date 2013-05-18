@@ -126,8 +126,14 @@ called (with the optional error argument).
 
 ### Deferred(fn)
 
-Returns a function that gets called only after this internal deffered object
+Returns a function that gets called only after the internal deferred object
 has been signaled by `this._resolve()`.
+
+### Deferred.stream(fn)
+
+Returns a function the gets called only after the constructor is ready, but
+returns a paused stream immediately, that will later be hooked up with the
+real stream.
 
 ## Installation
 
