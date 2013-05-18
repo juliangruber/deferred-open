@@ -22,12 +22,16 @@ function defer (fn) {
   };
 }
 
-function stream (fn) {
+function stream (fn, opts) {
+  if (!opts) opts = {};
   return function () {
     var self = this;
     if (self._ready.ready) return fn.apply(self, arguments);
 
     var tmp = tmpStream();
+    if (typeof opts.readable != 'undefined') tmp.readable = opts.readable;
+    if (typeof opts.writable != 'undefined') tmp.writable = opts.writable;
+
     var args = [].slice.call(arguments);
 
     self._ready.on('go', function (err) {
