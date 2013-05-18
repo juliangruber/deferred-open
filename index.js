@@ -20,6 +20,7 @@ function defer (fn) {
 
 function install (obj) {
   var ee = new Emitter;
+  ee.setMaxListeners(Infinity);
 
   function ready (err) {
     ready.ready = true;
