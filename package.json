@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "bind-component": "0.0.1",
-    "through": "~2.3.4",
     "tmp-stream": "~0.3.0"
   },
   "devDependencies": {

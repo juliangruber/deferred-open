@@ -1,7 +1,6 @@
 var Emitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
 var bind = require('bind-component');
-var through = require('through');
 var tmpStream = require('tmp-stream');
 
 module.exports = defer;
