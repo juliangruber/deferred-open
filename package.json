@@ -12,7 +12,6 @@
     "test": "tape test/*.js"
   },
   "dependencies": {
-    "bind-component": "0.0.1",
     "tmp-stream": "~0.3.0"
   },
   "devDependencies": {

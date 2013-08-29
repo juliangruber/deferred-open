@@ -1,6 +1,5 @@
 var Emitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
-var bind = require('bind-component');
 var tmpStream = require('tmp-stream');
 
 module.exports = defer;
@@ -64,4 +63,10 @@ function install (obj) {
 
   obj._ready = ready;
   obj._queue = queue;
+}
+
+function bind(obj, method) {
+  return function() {
+    obj[method].apply(obj, arguments);
+  }
 }
