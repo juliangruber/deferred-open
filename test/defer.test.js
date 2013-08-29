@@ -1,5 +1,6 @@
 var test = require('tape');
 var Deferred = require('..');
+var noop = function(){};
 
 function Something () {
   var self = this;
@@ -16,10 +17,14 @@ function Something () {
 Something.prototype.doAThing = Deferred(function (cb) {
   if (!this.loaded) cb(new Error('oops'));
   cb();
+  return this;
 });
 
 test('defer', function (t) {
   var something = new Something();
+
+  t.equal(something.doAThing(noop), something);
+
   var start = +new Date();
   something.doAThing(function (err) {
     var delay = +new Date() - start;

@@ -110,7 +110,7 @@ Something(function (err, something) {
 Call this in `fn`'s constructor in order to install the `_ready` and `_queue`
 member functions.
 
-### this._resolve([err])
+### this._ready([err])
 
 Call this when you finished doing your async stuff.
 
@@ -127,7 +127,8 @@ called (with the optional error argument).
 ### Deferred(fn)
 
 Returns a function that gets called only after the internal deferred object
-has been signaled by `this._resolve()`.
+has been signaled by `this._ready()`. Returns `this` when not ready, so it
+works with chained/fluent apis.
 
 ### Deferred.stream(fn[, opts])
 

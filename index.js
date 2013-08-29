@@ -19,6 +19,8 @@ function defer (fn) {
       if (err) throw err;
       fn.apply(self, args);
     });
+
+    return self;
   };
 }
 
